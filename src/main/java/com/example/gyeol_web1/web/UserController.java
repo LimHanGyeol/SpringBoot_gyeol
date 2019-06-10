@@ -20,6 +20,11 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
+    @GetMapping("/form")
+    public String form() {
+        return "/user/form";
+    }
+
     @PostMapping("")
     public String create(User user) {
         System.out.println("user : " + user);
