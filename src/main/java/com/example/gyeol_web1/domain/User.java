@@ -30,6 +30,8 @@ public class User {
         this.nickname = nickname;
     }
 
+
+
     @Override
     public String toString() {
         return "User{" +
