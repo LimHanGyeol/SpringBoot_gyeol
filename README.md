@@ -1,3 +1,4 @@
 # SpringBoot_gyeol
 Spring Boot example1
-부트스트랩 사용법을 익히기 위한 예제
+</br>
+스프링부트 / 부트스트랩 / git 사용법을 익히기 위한 예제
