@@ -5,10 +5,7 @@ import com.example.gyeol_web1.domain.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +17,10 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
-
+    @GetMapping("/form")
+    public String form() {
+        return "/user/form";
+    }
 
     @PostMapping("")
     public String create(User user) {
@@ -38,7 +38,17 @@ public class UserController {
     @GetMapping("/{id}/form")
     public String updateForm(@PathVariable Long id, Model model) {
         User user = userRepository.findById(id).get();
+        System.out.println(user);
+        //User user = userRepository.findOne(id);
         model.addAttribute("users", user);
         return "/user/updateForm";
+    }
+
+    @PutMapping("/{id}")
+    public String update(@PathVariable Long id, User newUser) {
+        User user = userRepository.findById(id).get();
+        user.update(newUser);
+        userRepository.save(user);
+        return "redirect:/users";
     }
 }

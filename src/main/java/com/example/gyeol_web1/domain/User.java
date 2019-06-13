@@ -18,6 +18,8 @@ public class User {
     private String password;
     private String nickname;
 
+
+
     public void setUserId(String userId) {
         this.userId = userId;
     }
@@ -30,14 +32,28 @@ public class User {
         this.nickname = nickname;
     }
 
+    public Long getId() {
+        return id;
+    }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void update(User newUser) {
+        this.nickname = newUser.nickname;
+        this.password = newUser.password;
+    }
 
     @Override
     public String toString() {
         return "User{" +
-                "userId='" + userId + '\'' +
+                "id=" + id +
+                ", userId='" + userId + '\'' +
                 ", password='" + password + '\'' +
                 ", nickname='" + nickname + '\'' +
                 '}';
     }
+
+
 }
