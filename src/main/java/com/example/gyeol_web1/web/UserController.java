@@ -28,14 +28,19 @@ public class UserController {
             System.out.println("Login Failed..");
             return "redirect:/users/loginForm";
         }
-
         if (!password.equals(user.getPassword())) {
             System.out.println("Login Failed..");
             return "redirect:/users/loginForm";
         }
         System.out.println("Login Success!");
-        session.setAttribute("user",user);
+        session.setAttribute("users",user);
+        System.out.println(user);
+        return "redirect:/";
+    }
 
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.removeAttribute("users");
         return "redirect:/";
     }
 
@@ -48,7 +53,7 @@ public class UserController {
     public String create(User user) {
         System.out.println("user : " + user);
         userRepository.save(user);
-        return "redirect:/users";
+        return "redirect:/";
     }
 
     @GetMapping("")
