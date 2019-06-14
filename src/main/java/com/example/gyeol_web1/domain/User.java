@@ -18,8 +18,8 @@ public class User {
     private String password;
     private String nickname;
 
-    public String getPassword() {
-        return password;
+    public String getUserId() {
+        return userId;
     }
 
     public void setUserId(String userId) {
@@ -34,13 +34,25 @@ public class User {
         this.nickname = nickname;
     }
 
-    public Long getId() {
-        return id;
-    }
-
+    // getter 를 쓰지않고 id 객체에 접근하는법 - 메세지를 보낸다.
     public void setId(Long id) {
         this.id = id;
     }
+    // getter 를 쓰지않고 password 객체에 접근하는법 - 메세지를 보낸다.
+    public boolean matchPassword(String newPassword) {
+        if (newPassword == null) {
+            return false;
+        }
+        return newPassword.equals(password);
+    }
+
+    public boolean matchId(Long newId) {
+        if (newId == null) {
+            return false;
+        }
+        return newId.equals(id);
+    }
+
 
     public void update(User newUser) {
         this.nickname = newUser.nickname;

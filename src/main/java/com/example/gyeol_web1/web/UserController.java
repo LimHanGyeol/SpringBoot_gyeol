@@ -28,19 +28,20 @@ public class UserController {
             System.out.println("Login Failed..");
             return "redirect:/users/loginForm";
         }
-        if (!password.equals(user.getPassword())) {
+        if (!user.matchPassword(password)) {
             System.out.println("Login Failed..");
             return "redirect:/users/loginForm";
         }
         System.out.println("Login Success!");
-        session.setAttribute("sessionedUsers",user);
-        System.out.println(user);
+        session.setAttribute(HttpSessionUtils.USER_SESSION_KEY,user);
+
+        System.out.println("로그인시 세션 저장 : "+ session);
         return "redirect:/";
     }
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {
-        session.removeAttribute("sessionedUsers");
+        session.removeAttribute(HttpSessionUtils.USER_SESSION_KEY);
         return "redirect:/";
     }
 
@@ -64,13 +65,12 @@ public class UserController {
 
     @GetMapping("/{id}/form")
     public String updateForm(@PathVariable Long id, Model model, HttpSession session) {
-        Object tempUsers = session.getAttribute("sessionedUsers");
-        if (tempUsers == null) {
+        if (HttpSessionUtils.isLoginUsers(session)) {
             return "redirect:/users/loginForm";
         }
 
-        User sessionedUser = (User)tempUsers;
-        if (!id.equals(sessionedUser.getId())) {
+        User sessionedUser = HttpSessionUtils.getUsersFromSession(session);
+        if (!sessionedUser.matchId(id)) {
             throw new IllegalArgumentException("You can't update the anther user");
         }
 
@@ -83,13 +83,12 @@ public class UserController {
 
     @PutMapping("/{id}")
     public String update(@PathVariable Long id, User updatedUser, HttpSession session) {
-        Object tempUsers = session.getAttribute("sessionedUsers");
-        if (tempUsers == null) {
+        if (HttpSessionUtils.isLoginUsers(session)) {
             return "redirect:/users/loginForm";
         }
 
-        User sessionedUser = (User)tempUsers;
-        if (!id.equals(sessionedUser.getId())) {
+        User sessionedUser = HttpSessionUtils.getUsersFromSession(session);
+        if (!sessionedUser.matchId(id)) {
             throw new IllegalArgumentException("You can't update the anther user");
         }
 
