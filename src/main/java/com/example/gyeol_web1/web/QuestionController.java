@@ -6,10 +6,7 @@ import com.example.gyeol_web1.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
@@ -47,4 +44,54 @@ public class QuestionController {
         return "/qna/show";
     }
 
+    @GetMapping("/{id}/form")
+    public String updateForm(@PathVariable Long id, Model model, HttpSession session) {
+        if (!HttpSessionUtils.isLoginUsers(session)) {
+            return "/users/loginForm";
+        }
+
+        User loginUser = HttpSessionUtils.getUsersFromSession(session);
+        Question question = questionRepository.findById(id).get();
+
+        if (!question.isSameWriter(loginUser)) {
+            return "/users/loginForm";
+        }
+
+        model.addAttribute("question", question);
+        return "/qna/updateForm";
+    }
+
+    @PutMapping("/{id}")
+    public String update(@PathVariable Long id, String title, String contents, HttpSession session) {
+        if (!HttpSessionUtils.isLoginUsers(session)) {
+            return "/users/loginForm";
+        }
+
+        User loginUser = HttpSessionUtils.getUsersFromSession(session);
+        Question question = questionRepository.findById(id).get();
+
+        if (!question.isSameWriter(loginUser)) {
+            return "/users/loginForm";
+        }
+
+        question.update(title, contents);
+        questionRepository.save(question);
+        return String.format("redirect:/questions/%d", id);
+    }
+
+    @DeleteMapping("/{id}")
+    public String delete(@PathVariable Long id, HttpSession session) {
+        if (!HttpSessionUtils.isLoginUsers(session)) {
+            return "/users/loginForm";
+        }
+
+        User loginUser = HttpSessionUtils.getUsersFromSession(session);
+        Question question = questionRepository.findById(id).get();
+
+        if (!question.isSameWriter(loginUser)) {
+            return "/users/loginForm";
+        }
+        questionRepository.delete(question);
+        return "redirect:/";
+    }
 }
