@@ -1,5 +1,8 @@
 package com.example.gyeol_web1.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,13 +13,15 @@ import java.util.Objects;
 public class User {
     @Id
     @GeneratedValue
+    @JsonProperty
     private Long id;
 
     @Column(nullable = false, length=100, unique = true)
+    @JsonProperty
     private String userId;
-
-
+    @JsonIgnore
     private String password;
+    @JsonProperty
     private String nickname;
 
     public String getUserId() {
