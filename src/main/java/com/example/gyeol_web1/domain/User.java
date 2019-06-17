@@ -10,12 +10,7 @@ import javax.persistence.Id;
 import java.util.Objects;
 
 @Entity
-public class User {
-    @Id
-    @GeneratedValue
-    @JsonProperty
-    private Long id;
-
+public class User extends AbstractEntity {
     @Column(nullable = false, length=100, unique = true)
     @JsonProperty
     private String userId;
@@ -41,9 +36,13 @@ public class User {
     }
 
     // getter 를 쓰지않고 id 객체에 접근하는법 - 메세지를 보낸다.
-    public void setId(Long id) {
-        this.id = id;
+    public boolean matchId(Long newId) {
+        if (newId == null) {
+            return false;
+        }
+        return newId.equals(getId());
     }
+
     // getter 를 쓰지않고 password 객체에 접근하는법 - 메세지를 보낸다.
     public boolean matchPassword(String newPassword) {
         if (newPassword == null) {
@@ -52,12 +51,7 @@ public class User {
         return newPassword.equals(password);
     }
 
-    public boolean matchId(Long newId) {
-        if (newId == null) {
-            return false;
-        }
-        return newId.equals(id);
-    }
+
 
 
     public void update(User newUser) {
@@ -66,22 +60,9 @@ public class User {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return Objects.equals(id, user.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
-
-    @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
+                super.toString() +
                 ", userId='" + userId + '\'' +
                 ", password='" + password + '\'' +
                 ", nickname='" + nickname + '\'' +

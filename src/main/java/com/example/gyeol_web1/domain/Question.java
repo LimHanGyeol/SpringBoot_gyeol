@@ -10,12 +10,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-public class Question {
-    @Id
-    @GeneratedValue
-    @JsonProperty
-    private Long id;
-
+public class Question extends AbstractEntity {
     @ManyToOne
     @JoinColumn(foreignKey = @ForeignKey(name = "fk_question_writer"))
     @JsonProperty
@@ -26,8 +21,6 @@ public class Question {
 
     @JsonProperty
     private Integer countOfAnswer = 0;
-
-    private LocalDateTime createDate;
 
     /*
      기본 String 형으로 글쓰기 같은 DB의 타입을 설정해주면 , 255자로 설정이 된다.
@@ -50,14 +43,10 @@ public class Question {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
-        this.createDate = LocalDateTime.now();
     }
 
-    public String getFormattedCreateDate() {
-        if (createDate == null) {
-            return "";
-        }
-        return createDate.format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss"));
+    public boolean isSameWriter(User loginUser) {
+        return this.writer.equals(loginUser);
     }
 
     public void update(String title, String contents) {
@@ -71,23 +60,6 @@ public class Question {
 
     public void deleteAnswer() {
         this.countOfAnswer -= 1;
-    }
-
-    public boolean isSameWriter(User loginUser) {
-        return this.writer.equals(loginUser);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Question question = (Question) o;
-        return Objects.equals(id, question.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
     }
 
 
