@@ -1,5 +1,8 @@
 package com.example.gyeol_web1.domain;
 
+/**
+ * 강의 5-6 내용
+ */
 public class Result {
     private boolean valid;
 
