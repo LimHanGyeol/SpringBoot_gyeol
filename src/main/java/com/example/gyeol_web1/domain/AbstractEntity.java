@@ -13,6 +13,11 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
+/**
+ * DB의 중복되는 칼럼을 제거하고,
+ * 이 클래스를 수퍼클래스로 지정하여 합친다.
+ * AbstractEntity 클래스를 상속하면, 여기에 설정된 칼럼들이 자동 생성 된다.
+ */
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public class AbstractEntity {
